@@ -388,7 +388,7 @@ module.exports = class HostManager {
     const subKey = target && target != '0.0.0.0' ? ':' + target : '';
     const { granularities, hits} = statSettings;
     const stats = {}
-    const metricArray = metrics || [ 'upload', 'download', 'conn', 'ipB', 'dns', 'dnsB' ]
+    const metricArray = metrics || [ 'upload', 'download', 'conn', 'ipB', 'dns', 'dnsB', 'ntp' ]
     for (const metric of metricArray) {
       stats[metric] = await getHitsAsync(metric + subKey, granularities, hits)
     }
@@ -459,7 +459,7 @@ module.exports = class HostManager {
     const subKey = target && target != '0.0.0.0' ? ':' + target : ''
 
     const stats = {}
-    const metrics = [ 'upload', 'download', 'conn', 'ipB', 'dns', 'dnsB' ]
+    const metrics = [ 'upload', 'download', 'conn', 'ipB', 'dns', 'dnsB', 'ntp' ]
     for (const metric of metrics) {
       const s = await getHitsAsync(metric + subKey, "1minute", 61)
       if (s[s.length - 1] && s[s.length - 1][1] == 0) {
@@ -2067,6 +2067,7 @@ module.exports = class HostManager {
     return result
   }
 
+  // Deprecating, MSP no longer needs this after 2.7.0
   async loadStats(json={}, target='', count=50) {
     target = target == '0.0.0.0' ? '' : target;
     const systemFlows = {};
